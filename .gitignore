@@ -1,0 +1,18 @@
+# Build artifacts
+build/
+peut-etre
+
+# Generated files
+*.o
+*.out
+/tmp/pe_*
+
+# Editor
+.vscode/
+*.swp
+*~
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,47 @@
+{
+    "VAR":          ["genre", "en_gros"],
+    "IF":           "si_ca_te_tente",
+    "ELIF":         "sur_un_malentendu",
+    "ELSE":         "sinon_tant_pis",
+    "WHILE":        "jusqu_a_ce_qu_on_en_ait_marre",
+    "BREAK":        "c_est_bon_laisse_tomber",
+    "CONTINUE":     "flemme_passe_au_suivant",
+    "FUNC":         "petit_truc_qui_fait",
+    "RETURN":       "on_verra_bien",
+    "PRINT":        "lache_un_com",
+    "MAIN":         "bon_on_y_va",
+    "IMPORT":       "ramene_le_pote",
+    "THROW":        "je_me_casse",
+
+    "TRUE":         "carrement",
+    "FALSE":        "mort",
+    "MAYBE_TRUE":   "ouais_vite_fait",
+    "MAYBE_FALSE":  "bof",
+    "NULL":         "nada",
+    "HALF_TRUE":    "c_est_pas_faux",
+
+    "STRING_TYPE":  "blabla",
+    "NUMBER_TYPE":  "un_chiffre",
+    "ARRAY_TYPE":   "un_tas_de_trucs",
+    "ANY_TYPE":     "n_importe_quoi",
+
+    "FUZZY_EQ":     "kif_kif",
+    "NOT_EQ":       "pas_trop_pareil",
+    "LOGIC_AND":    "et_vas_y_aussi",
+    "LOGIC_OR":     "ou_alors_bref",
+    "GREATER":      "plus_gros_que",
+    "LESS":         "moins_ouf_que",
+
+    "ASYNC":        "quand_j_aurai_le_temps",
+    "AWAIT":        "pause_cafe",
+    "INTERFACE":    "en_theorie",
+    "EXPORT":       "tiens_cadeau",
+    "TRY":          "on_tente_un_truc",
+    "CATCH":        "oups_my_bad",
+    "FINALLY":      "bref_on_avance",
+
+    "CAST":         "fais_genre",
+    "ASSERT":       "j_te_jure",
+    "RETRY":        "rooh_allez",
+    "DELETE":       "laisse_beton"
+}

@@ -1,0 +1,32 @@
+// Mon premier programme Peut-Être
+// Rien n'est garanti, mais on va essayer.
+
+genre message = "Bonjour le monde !";
+lache_un_com(message);
+
+genre x = 42;
+genre y = x + 8;
+lache_un_com(y);
+
+// Les conditions, si ça te tente
+si_ca_te_tente (x > 40) {
+    lache_un_com("x est plutôt grand, probablement");
+} sur_un_malentendu (x > 20) {
+    lache_un_com("x est moyen, bof");
+} sinon_tant_pis {
+    lache_un_com("x est pas ouf");
+}
+
+// Une boucle qui va peut-être finir
+genre compteur = 0;
+jusqu_a_ce_qu_on_en_ait_marre (compteur < 100) {
+    compteur = compteur + 1;
+}
+lache_un_com(compteur);
+
+// Les booléens à la française
+genre surement = carrement;
+genre pas_du_tout = mort;
+genre moyen = ouais_vite_fait;
+genre bof_bof = bof;
+genre peut_etre = c_est_pas_faux;
