@@ -7,7 +7,7 @@ OBJECTS  = $(SOURCES:$(SRCDIR)/%.c=$(BUILDDIR)/%.o)
 TARGET   = peut-etre
 VERSION  = 0.1.0
 
-.PHONY: all clean test setup vscode-ext
+.PHONY: all clean test setup vscode-ext changelog release
 
 all: $(TARGET)
 
@@ -40,6 +40,18 @@ vscode-ext: $(TARGET)
 	@echo ""
 	@echo "Install with:"
 	@echo "  code --install-extension vscode-extension/peut-etre-$(VERSION).vsix"
+
+changelog:
+	@git cliff --output CHANGELOG.md
+	@echo "CHANGELOG.md updated."
+
+release: $(TARGET) changelog vscode-ext
+	@echo ""
+	@echo "Release v$(VERSION) ready:"
+	@echo "  1. git add CHANGELOG.md && git commit -m 'chore: update changelog'"
+	@echo "  2. git tag -a v$(VERSION) -m 'v$(VERSION)'"
+	@echo "  3. git push origin main v$(VERSION)"
+	@echo "  4. gh release create v$(VERSION) ./peut-etre ./vscode-extension/peut-etre-$(VERSION).vsix"
 
 clean:
 	rm -rf $(BUILDDIR) $(TARGET) vscode-extension/*.vsix
