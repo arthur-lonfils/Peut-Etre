@@ -2,7 +2,7 @@
     "name": "peut-etre",
     "displayName": "Peut-Être",
     "description": "Syntax highlighting for Peut-Être — the non-committal programming language.",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "publisher": "arthur-lonfils",
     "license": "MIT",
     "repository": {

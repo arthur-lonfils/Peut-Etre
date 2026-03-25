@@ -5,7 +5,7 @@ BUILDDIR = build
 SOURCES  = $(wildcard $(SRCDIR)/*.c)
 OBJECTS  = $(SOURCES:$(SRCDIR)/%.c=$(BUILDDIR)/%.o)
 TARGET   = peut-etre
-VERSION  = 0.1.1
+VERSION  = 0.1.2
 
 .PHONY: all clean test setup vscode-ext changelog release
 
