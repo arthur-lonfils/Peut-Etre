@@ -205,10 +205,11 @@ Use `--dict path/to/custom.json` to load a custom dictionary. No recompilation n
 |---|---|
 | Lexer (dynamic dictionary, 49 token types) | Done |
 | Parser (recursive-descent, Pratt expressions) | Done |
-| Chaos Runtime (C + TypeScript) | Next |
-| Code Generation (C + TypeScript backends) | Planned |
-| End-to-End Pipeline | Planned |
-| VS Code Extension | Planned |
+| Chaos Runtime (C + TypeScript) | Done |
+| Code Generation (C + TypeScript backends) | Done |
+| End-to-End Pipeline | Done |
+| Test Suite (30 tests) | Done |
+| VS Code Extension (syntax, snippets) | Done |
 
 ---
 

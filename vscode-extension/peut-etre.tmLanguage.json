@@ -1,0 +1,48 @@
+{
+  "name": "Peut-Être",
+  "scopeName": "source.pt",
+  "fileTypes": ["pt"],
+  "patterns": [
+    {
+      "name": "keyword.declaration.pt",
+      "match": "\\b(genre|en_gros|petit_truc_qui_fait|bon_on_y_va|ramene_le_pote|quand_j_aurai_le_temps|en_theorie|tiens_cadeau)\\b"
+    },
+    {
+      "name": "keyword.control.pt",
+      "match": "\\b(si_ca_te_tente|sur_un_malentendu|sinon_tant_pis|jusqu_a_ce_qu_on_en_ait_marre|c_est_bon_laisse_tomber|flemme_passe_au_suivant|on_verra_bien|je_me_casse|pause_cafe|on_tente_un_truc|oups_my_bad|bref_on_avance)\\b"
+    },
+    {
+      "name": "support.function.pt",
+      "match": "\\b(lache_un_com)\\b"
+    },
+    {
+      "name": "constant.language.pt",
+      "match": "\\b(carrement|mort|ouais_vite_fait|bof|nada|c_est_pas_faux)\\b"
+    },
+    {
+      "name": "storage.type.pt",
+      "match": "\\b(blabla|un_chiffre|un_tas_de_trucs|n_importe_quoi)\\b"
+    },
+    {
+      "name": "keyword.operator.pt",
+      "match": "\\b(kif_kif|pas_trop_pareil|et_vas_y_aussi|ou_alors_bref|plus_gros_que|moins_ouf_que)\\b"
+    },
+    {
+      "name": "keyword.other.pt",
+      "match": "\\b(fais_genre|j_te_jure|rooh_allez|laisse_beton)\\b"
+    },
+    {
+      "name": "comment.line.double-slash.pt",
+      "match": "//.*$"
+    },
+    {
+      "name": "string.quoted.double.pt",
+      "begin": "\"",
+      "end": "\""
+    },
+    {
+      "name": "constant.numeric.pt",
+      "match": "\\b[0-9]+(\\.[0-9]+)?\\b"
+    }
+  ]
+}

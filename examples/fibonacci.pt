@@ -1,0 +1,14 @@
+// Fibonacci — mais en mode peut-être
+
+petit_truc_qui_fait fibo(n) {
+    si_ca_te_tente (n < 2) {
+        on_verra_bien n;
+    }
+    on_verra_bien fibo(n - 1) + fibo(n - 2);
+}
+
+genre i = 0;
+jusqu_a_ce_qu_on_en_ait_marre (i < 15) {
+    lache_un_com(fibo(i));
+    i = i + 1;
+}

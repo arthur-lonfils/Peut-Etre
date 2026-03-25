@@ -6,7 +6,7 @@ SOURCES  = $(wildcard $(SRCDIR)/*.c)
 OBJECTS  = $(SOURCES:$(SRCDIR)/%.c=$(BUILDDIR)/%.o)
 TARGET   = peut-etre
 
-.PHONY: all clean
+.PHONY: all clean test
 
 all: $(TARGET)
 
@@ -18,6 +18,9 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.c | $(BUILDDIR)
 
 $(BUILDDIR):
 	mkdir -p $(BUILDDIR)
+
+test: $(TARGET)
+	./tests/run_tests.sh
 
 clean:
 	rm -rf $(BUILDDIR) $(TARGET)

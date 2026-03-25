@@ -1,0 +1,78 @@
+{
+    "Variable Declaration": {
+        "prefix": "genre",
+        "body": "genre ${1:nom} = ${2:valeur};",
+        "description": "Déclarer une variable (genre)"
+    },
+    "Variable Declaration (alt)": {
+        "prefix": "en_gros",
+        "body": "en_gros ${1:nom} = ${2:valeur};",
+        "description": "Déclarer une variable (en_gros)"
+    },
+    "If Statement": {
+        "prefix": "si_ca_te_tente",
+        "body": [
+            "si_ca_te_tente (${1:condition}) {",
+            "    ${2}",
+            "}"
+        ],
+        "description": "Condition if (si ça te tente)"
+    },
+    "If/Else Statement": {
+        "prefix": "si_sinon",
+        "body": [
+            "si_ca_te_tente (${1:condition}) {",
+            "    ${2}",
+            "} sinon_tant_pis {",
+            "    ${3}",
+            "}"
+        ],
+        "description": "Condition if/else"
+    },
+    "If/Elif/Else Statement": {
+        "prefix": "si_sur_sinon",
+        "body": [
+            "si_ca_te_tente (${1:condition}) {",
+            "    ${2}",
+            "} sur_un_malentendu (${3:condition}) {",
+            "    ${4}",
+            "} sinon_tant_pis {",
+            "    ${5}",
+            "}"
+        ],
+        "description": "Condition if/elif/else"
+    },
+    "While Loop": {
+        "prefix": "jusqu_a",
+        "body": [
+            "jusqu_a_ce_qu_on_en_ait_marre (${1:condition}) {",
+            "    ${2}",
+            "}"
+        ],
+        "description": "Boucle while (jusqu'à ce qu'on en ait marre)"
+    },
+    "Function Definition": {
+        "prefix": "petit_truc",
+        "body": [
+            "petit_truc_qui_fait ${1:nom}(${2:params}) {",
+            "    ${3}",
+            "}"
+        ],
+        "description": "Définir une fonction"
+    },
+    "Print": {
+        "prefix": "lache",
+        "body": "lache_un_com(${1:valeur});",
+        "description": "Afficher une valeur (lâche un com)"
+    },
+    "Return": {
+        "prefix": "on_verra",
+        "body": "on_verra_bien ${1:valeur};",
+        "description": "Retourner une valeur (on verra bien)"
+    },
+    "Break": {
+        "prefix": "c_est_bon",
+        "body": "c_est_bon_laisse_tomber;",
+        "description": "Sortir de la boucle (c'est bon, laisse tomber)"
+    }
+}
