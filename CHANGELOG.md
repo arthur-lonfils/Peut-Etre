@@ -2,6 +2,15 @@
 
 Toutes les modifications notables de Peut-Être sont documentées ici.
 
+## [0.1.2] - 2026-03-25
+
+### Bug Fixes
+
+- Trim logo whitespace for proper icon sizing ([ae9d5e0](https://github.com/arthur-lonfils/Peut-Etre/commit/ae9d5e080018bfb5ccb1aaa4964609acdf45c162))
+Trimmed void space around the P? logo before generating square icons.
+  The logo now fills the icon frame at all sizes (16-256px).
+  Bumped to v0.1.2.
+
 ## [0.1.1] - 2026-03-25
 
 ### Bug Fixes
@@ -12,6 +21,7 @@ Toutes les modifications notables de Peut-Être sont documentées ici.
 
 ### Maintenance
 
+- Bump version to 0.1.1, update changelog ([afaf175](https://github.com/arthur-lonfils/Peut-Etre/commit/afaf175eebe2a6d4740ec08b0e3d5fc72cc75784))
 - Add git-cliff changelog generation ([7e5fbfd](https://github.com/arthur-lonfils/Peut-Etre/commit/7e5fbfd331cbbddc60ff886a9be7fa4087dbb173))
 - cliff.toml: conventional commit parsing with French header,
     grouped sections, commit links to GitHub
