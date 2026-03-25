@@ -3,6 +3,7 @@
 #include <string.h>
 #include <time.h>
 #include "lexer.h"
+#include "parser.h"
 #include "util.h"
 
 #define PE_VERSION "0.1.0"
@@ -19,6 +20,7 @@ typedef struct {
     int do_format;
     int do_tmlanguage;
     int do_lex;
+    int do_ast;
     int do_emit;
     unsigned int seed;
     int has_seed;
@@ -39,6 +41,7 @@ static void print_usage(const char *prog) {
     fprintf(stderr, "  --target c|ts            Langage cible (defaut: c)\n");
     fprintf(stderr, "  --dict CHEMIN            Chemin vers dictionnaire.json\n");
     fprintf(stderr, "  --lex                    Afficher les tokens (debug)\n");
+    fprintf(stderr, "  --ast                    Afficher l'AST (debug)\n");
     fprintf(stderr, "  --emit                   Afficher le code genere\n");
     fprintf(stderr, "  --lint                   Lancer le linter feignant\n");
     fprintf(stderr, "  --format                 Lancer le formateur anarchiste\n");
@@ -73,6 +76,8 @@ static int parse_args(int argc, char *argv[], PeOptions *opts) {
             opts->do_tmlanguage = 1;
         } else if (strcmp(argv[i], "--lex") == 0) {
             opts->do_lex = 1;
+        } else if (strcmp(argv[i], "--ast") == 0) {
+            opts->do_ast = 1;
         } else if (strcmp(argv[i], "--emit") == 0) {
             opts->do_emit = 1;
         } else if (strcmp(argv[i], "--seed") == 0) {
@@ -424,12 +429,28 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
-    /* Full transpilation pipeline (Phase 2+) */
+    /* --ast (debug: print AST) */
+    if (opts.do_ast) {
+        Lexer lex;
+        lexer_init(&lex, source, opts.input_file, &dict);
+        AstNode *program = parse(&lex);
+        if (program) {
+            ast_dump(program, 0);
+            ast_free(program);
+        } else {
+            fprintf(stderr, "Bon, le parsing a plante. Etonnant.\n");
+        }
+        free(source);
+        pe_dict_free(&dict);
+        return program ? 0 : 1;
+    }
+
+    /* Full transpilation pipeline (Phase 3+) */
     print_banner();
     fprintf(stderr, "Le pipeline complet arrive bient\xC3\xB4t. "
                     "Patience, on est pas press\xC3\xA9s.\n");
 
-    /* TODO: parse -> codegen -> compile -> run */
+    /* TODO: codegen -> compile -> run */
     (void)opts.do_emit;
     (void)opts.no_chaos;
 

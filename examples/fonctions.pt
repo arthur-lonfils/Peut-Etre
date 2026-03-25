@@ -1,0 +1,25 @@
+// Fonctions et appels
+
+petit_truc_qui_fait doubler(x) {
+    on_verra_bien x * 2;
+}
+
+petit_truc_qui_fait saluer(nom) {
+    lache_un_com("Salut,");
+    lache_un_com(nom);
+}
+
+genre resultat = doubler(21);
+lache_un_com(resultat);
+
+saluer("le monde");
+
+// Boucle avec break
+genre i = 0;
+jusqu_a_ce_qu_on_en_ait_marre (i < 50) {
+    si_ca_te_tente (i == 42) {
+        lache_un_com("Le sens de la vie !");
+        c_est_bon_laisse_tomber;
+    }
+    i = i + 1;
+}
