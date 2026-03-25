@@ -1,4 +1,5 @@
 <p align="center">
+  <img src="icons/peut-etre_logo-transparent_bg.png" alt="Peut-Être Logo" width="200"/>
   <h1 align="center">Peut-Être</h1>
   <p align="center"><strong>The Non-Committal Programming Language</strong></p>
   <p align="center">
