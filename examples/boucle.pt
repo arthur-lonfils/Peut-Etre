@@ -1,0 +1,31 @@
+// Boucles — exemples de boucles qui en ont marre
+
+// Compteur simple
+genre i = 0;
+jusqu_a_ce_qu_on_en_ait_marre (i < 10) {
+    lache_un_com(i);
+    i = i + 1;
+}
+
+// Boucle avec break conditionnel
+genre j = 0;
+jusqu_a_ce_qu_on_en_ait_marre (j < 100) {
+    si_ca_te_tente (j == 7) {
+        lache_un_com("On s'arrete a 7, c_est_bon_laisse_tomber");
+        c_est_bon_laisse_tomber;
+    }
+    j = j + 1;
+}
+lache_un_com("j final =");
+lache_un_com(j);
+
+// Boucle imbriquée
+genre x = 0;
+jusqu_a_ce_qu_on_en_ait_marre (x < 3) {
+    genre y = 0;
+    jusqu_a_ce_qu_on_en_ait_marre (y < 3) {
+        lache_un_com(x * 10 + y);
+        y = y + 1;
+    }
+    x = x + 1;
+}

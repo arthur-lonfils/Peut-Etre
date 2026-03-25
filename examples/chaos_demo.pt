@@ -1,0 +1,55 @@
+// Chaos Demo — Démonstration du Moteur de Chaos
+// Lance ce fichier plusieurs fois. Le résultat ne sera jamais le même.
+// C'est une fonctionnalité, pas un bug.
+
+// === Math Apathy (5% chance: résultat ±1) ===
+genre a = 10 + 10;
+lache_un_com("10 + 10 =");
+lache_un_com(a);
+
+genre b = 100 * 2;
+lache_un_com("100 * 2 =");
+lache_un_com(b);
+
+// === Conditional Laziness (5% chance: flemme de vérifier) ===
+genre x = 42;
+si_ca_te_tente (x == 42) {
+    lache_un_com("x est bien 42 (normalement)");
+} sinon_tant_pis {
+    lache_un_com("x est 42 mais le chaos a dit non");
+}
+
+// === Loop Exhaustion (10% après 20 itérations) ===
+genre compteur = 0;
+jusqu_a_ce_qu_on_en_ait_marre (compteur < 1000) {
+    compteur = compteur + 1;
+}
+lache_un_com("La boucle s'est arretee a:");
+lache_un_com(compteur);
+
+// === Probabilistic Booleans ===
+genre surement = carrement;
+genre jamais = mort;
+genre probable = ouais_vite_fait;
+genre peu_probable = bof;
+genre pile_ou_face = c_est_pas_faux;
+
+lache_un_com("carrement =");
+lache_un_com(surement);
+lache_un_com("mort =");
+lache_un_com(jamais);
+lache_un_com("ouais_vite_fait =");
+lache_un_com(probable);
+lache_un_com("bof =");
+lache_un_com(peu_probable);
+lache_un_com("c_est_pas_faux =");
+lache_un_com(pile_ou_face);
+
+// === Fuzzy Equality (kif_kif: 5% chance de dire oui quand même) ===
+genre p = 1;
+genre q = 2;
+si_ca_te_tente (p kif_kif q) {
+    lache_un_com("1 kif_kif 2 ? Apparemment oui (chaos)");
+} sinon_tant_pis {
+    lache_un_com("1 kif_kif 2 ? Non, quand meme pas");
+}

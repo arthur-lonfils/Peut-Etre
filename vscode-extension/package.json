@@ -1,0 +1,52 @@
+{
+    "name": "peut-etre",
+    "displayName": "Peut-Être",
+    "description": "Syntax highlighting for Peut-Être — the non-committal programming language.",
+    "version": "0.1.0",
+    "publisher": "arthur-lonfils",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/arthur-lonfils/Peut-Etre"
+    },
+    "icon": "icon.png",
+    "engines": {
+        "vscode": "^1.75.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [
+            {
+                "id": "peut-etre",
+                "aliases": [
+                    "Peut-Être",
+                    "peut-etre",
+                    "pt"
+                ],
+                "extensions": [
+                    ".pt"
+                ],
+                "configuration": "./language-configuration.json",
+                "icon": {
+                    "light": "icon.png",
+                    "dark": "icon.png"
+                }
+            }
+        ],
+        "grammars": [
+            {
+                "language": "peut-etre",
+                "scopeName": "source.pt",
+                "path": "./peut-etre.tmLanguage.json"
+            }
+        ],
+        "snippets": [
+            {
+                "language": "peut-etre",
+                "path": "./snippets.json"
+            }
+        ]
+    }
+}
