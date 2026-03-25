@@ -2,6 +2,22 @@
 
 Toutes les modifications notables de Peut-Être sont documentées ici.
 
+## [0.1.1] - 2026-03-25
+
+### Bug Fixes
+
+- Generate proper square icons at standard sizes ([109c924](https://github.com/arthur-lonfils/Peut-Etre/commit/109c9248a6360ce542e5597c626535723ed73a29))
+- Created square icons (16, 32, 64, 128, 256px) from the landscape logo
+  - Updated VS Code extension to use 128px square icon (2.6KB vs 35KB)
+
+### Maintenance
+
+- Add git-cliff changelog generation ([7e5fbfd](https://github.com/arthur-lonfils/Peut-Etre/commit/7e5fbfd331cbbddc60ff886a9be7fa4087dbb173))
+- cliff.toml: conventional commit parsing with French header,
+    grouped sections, commit links to GitHub
+  - CHANGELOG.md: auto-generated from git history
+  - Makefile: `make changelog` and `make release` targets
+
 ## [0.1.0] - 2026-03-25
 
 ### Documentation
