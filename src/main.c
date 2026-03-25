@@ -4,7 +4,10 @@
 #include <time.h>
 #include "lexer.h"
 #include "parser.h"
+#include "codegen.h"
 #include "util.h"
+#include <unistd.h>
+#include <sys/wait.h>
 
 #define PE_VERSION "0.1.0"
 
@@ -134,6 +137,28 @@ static const char *resolve_dict_path(const char *argv0, const char *flag_path,
     if (f) { fclose(f); return buf; }
 
     return buf;  /* let pe_dict_load report the error */
+}
+
+/* Resolve path to a runtime file (chaos_runtime.h or chaos_runtime.ts).
+ * Looks in: runtime/ next to binary, then runtime/ in cwd. */
+static void resolve_runtime_path(const char *argv0, const char *filename,
+                                 char *buf, size_t buf_size) {
+    FILE *f;
+    const char *last_slash = strrchr(argv0, '/');
+
+    if (last_slash) {
+        int dir_len = (int)(last_slash - argv0 + 1);
+        snprintf(buf, buf_size, "%.*sruntime/%s", dir_len, argv0, filename);
+        f = fopen(buf, "r");
+        if (f) { fclose(f); return; }
+    }
+
+    snprintf(buf, buf_size, "runtime/%s", filename);
+    f = fopen(buf, "r");
+    if (f) { fclose(f); return; }
+
+    /* Fallback: just the filename */
+    snprintf(buf, buf_size, "%s", filename);
 }
 
 /* ============================================================
@@ -445,16 +470,108 @@ int main(int argc, char *argv[]) {
         return program ? 0 : 1;
     }
 
-    /* Full transpilation pipeline (Phase 3+) */
+    /* ============================================================
+     * Full transpilation pipeline: lex -> parse -> codegen -> compile -> run
+     * ============================================================ */
+
+    /* Parse */
+    Lexer lex;
+    lexer_init(&lex, source, opts.input_file, &dict);
+    AstNode *program = parse(&lex);
+    if (!program) {
+        fprintf(stderr, "Bon, le parsing a plant\xC3\xA9. \xC3\x89tonnant.\n");
+        free(source);
+        pe_dict_free(&dict);
+        return 1;
+    }
+
+    /* Load the appropriate runtime */
+    char runtime_path_buf[1024];
+    const char *rt_filename = (strcmp(opts.target, "ts") == 0)
+                              ? "chaos_runtime.ts" : "chaos_runtime.h";
+    resolve_runtime_path(argv[0], rt_filename, runtime_path_buf,
+                         sizeof(runtime_path_buf));
+    char *runtime_src = pe_read_file(runtime_path_buf);
+    if (!runtime_src) {
+        fprintf(stderr, "Erreur: impossible de charger le runtime '%s'.\n",
+                runtime_path_buf);
+        ast_free(program);
+        free(source);
+        pe_dict_free(&dict);
+        return 1;
+    }
+
+    /* --emit: just print the generated code */
+    if (opts.do_emit) {
+        if (strcmp(opts.target, "ts") == 0)
+            codegen_ts_emit(stdout, program, runtime_src, opts.no_chaos,
+                            opts.seed, opts.has_seed);
+        else
+            codegen_c_emit(stdout, program, runtime_src, opts.no_chaos,
+                           opts.seed, opts.has_seed);
+        free(runtime_src);
+        ast_free(program);
+        free(source);
+        pe_dict_free(&dict);
+        return 0;
+    }
+
+    /* Generate to temp file, compile, and run */
     print_banner();
-    fprintf(stderr, "Le pipeline complet arrive bient\xC3\xB4t. "
-                    "Patience, on est pas press\xC3\xA9s.\n");
 
-    /* TODO: codegen -> compile -> run */
-    (void)opts.do_emit;
-    (void)opts.no_chaos;
+    int is_ts = (strcmp(opts.target, "ts") == 0);
+    char tmp_src[256], tmp_bin[256];
+    pid_t pid = getpid();
 
+    if (is_ts) {
+        snprintf(tmp_src, sizeof(tmp_src), "/tmp/pe_%d.ts", pid);
+    } else {
+        snprintf(tmp_src, sizeof(tmp_src), "/tmp/pe_%d.c", pid);
+        snprintf(tmp_bin, sizeof(tmp_bin), "/tmp/pe_%d", pid);
+    }
+
+    FILE *tmp = fopen(tmp_src, "w");
+    if (!tmp) {
+        fprintf(stderr, "Erreur: impossible de cr\xC3\xA9""er '%s'.\n", tmp_src);
+        free(runtime_src);
+        ast_free(program);
+        free(source);
+        pe_dict_free(&dict);
+        return 1;
+    }
+
+    if (is_ts)
+        codegen_ts_emit(tmp, program, runtime_src, opts.no_chaos,
+                        opts.seed, opts.has_seed);
+    else
+        codegen_c_emit(tmp, program, runtime_src, opts.no_chaos,
+                       opts.seed, opts.has_seed);
+    fclose(tmp);
+
+    int rc;
+    if (is_ts) {
+        /* TypeScript: run with npx ts-node */
+        char cmd[512];
+        snprintf(cmd, sizeof(cmd), "npx ts-node \"%s\"", tmp_src);
+        rc = system(cmd);
+    } else {
+        /* C: compile with gcc, then run */
+        char cmd[1024];
+        snprintf(cmd, sizeof(cmd),
+                 "gcc -std=c11 -O1 -w -o \"%s\" \"%s\" -lm", tmp_bin, tmp_src);
+        rc = system(cmd);
+        if (rc != 0) {
+            fprintf(stderr, "Bon, \xC3\xA7""a compile pas. \xC3\x89tonnant.\n");
+        } else {
+            rc = system(tmp_bin);
+        }
+        remove(tmp_bin);
+    }
+    remove(tmp_src);
+
+    free(runtime_src);
+    ast_free(program);
     free(source);
     pe_dict_free(&dict);
-    return 0;
+    return WIFEXITED(rc) ? WEXITSTATUS(rc) : 1;
 }
