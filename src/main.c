@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-#define PE_VERSION "0.1.0"
+#define PE_VERSION "0.1.1"
 
 /* ============================================================
  * CLI Options
