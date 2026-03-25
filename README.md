@@ -57,6 +57,7 @@ Every Peut-Être program runs through the **Chaos Engine** — three probabilist
 git clone git@github.com:arthur-lonfils/Peut-Etre.git
 cd Peut-Etre
 make
+make setup    # install git hooks (conventional commits + pre-commit checks)
 ```
 
 Requires `gcc` with C11 support. No external dependencies.
@@ -160,12 +161,19 @@ Randomly misaligns brackets, swaps spaces and tabs:
 # /* Voilà, c'est 'artistique' maintenant. */
 ```
 
-### VS Code Extension Prep (`--generate-tmLanguage`)
+### VS Code Extension
 
-Generates a TextMate grammar JSON from the dictionary for syntax highlighting:
+Syntax highlighting, snippets, and bracket matching for `.pt` files:
 
 ```bash
-./peut-etre --generate-tmLanguage > peut-etre.tmLanguage.json
+make vscode-ext                                              # package the extension
+code --install-extension vscode-extension/peut-etre-0.1.0.vsix  # install it
+```
+
+Or regenerate the grammar manually:
+
+```bash
+./peut-etre --generate-tmLanguage > vscode-extension/peut-etre.tmLanguage.json
 ```
 
 ---

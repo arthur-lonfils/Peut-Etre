@@ -1,0 +1,57 @@
+#!/bin/bash
+# Peut-Être — Commit Message Validator
+# Enforces conventional commit format:
+#   type(scope): message
+#   type: message
+#
+# Valid types: feat, fix, docs, style, refactor, test, chore, ci, perf, build
+
+commit_msg_file="$1"
+commit_msg=$(head -1 "$commit_msg_file")
+
+# Allow merge commits
+if echo "$commit_msg" | grep -qE '^Merge '; then
+    exit 0
+fi
+
+# Conventional commit regex
+pattern='^(feat|fix|docs|style|refactor|test|chore|ci|perf|build)(\([a-z0-9_-]+\))?: .{1,}'
+
+if ! echo "$commit_msg" | grep -qE "$pattern"; then
+    echo ""
+    echo "  \033[31mErreur: format de commit invalide.\033[0m"
+    echo ""
+    echo "  Format attendu: type(scope): message"
+    echo ""
+    echo "  Types valides:"
+    echo "    feat      Nouvelle fonctionnalité"
+    echo "    fix       Correction de bug"
+    echo "    docs      Documentation"
+    echo "    style     Formatage (pas de changement de code)"
+    echo "    refactor  Refactorisation"
+    echo "    test      Ajout/modification de tests"
+    echo "    chore     Maintenance"
+    echo "    ci        CI/CD"
+    echo "    perf      Performance"
+    echo "    build     Build system"
+    echo ""
+    echo "  Exemples:"
+    echo "    feat: add new keyword to dictionary"
+    echo "    fix(lexer): crash on empty file"
+    echo "    docs: update README"
+    echo ""
+    echo "  Ton message: \"$commit_msg\""
+    echo ""
+    exit 1
+fi
+
+# Warn if subject line is too long
+subject_len=${#commit_msg}
+if [ "$subject_len" -gt 72 ]; then
+    echo ""
+    echo "  \033[33mAttention: le sujet fait $subject_len caractères (max recommandé: 72).\033[0m"
+    echo "  On laisse passer, mais c'est pas ouf."
+    echo ""
+fi
+
+exit 0

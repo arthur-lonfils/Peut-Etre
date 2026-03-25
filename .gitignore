@@ -5,6 +5,7 @@ peut-etre
 # Generated files
 *.o
 *.out
+*.vsix
 /tmp/pe_*
 
 # Editor
