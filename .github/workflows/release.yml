@@ -75,13 +75,13 @@ jobs:
           ./peut-etre --generate-tmLanguage > vscode-extension/peut-etre.tmLanguage.json || true
           cd vscode-extension && vsce package --allow-missing-repository
 
-      - name: Install git-cliff
-        run: |
-          curl -sL https://github.com/orhun/git-cliff/releases/latest/download/git-cliff-x86_64-unknown-linux-gnu.tar.gz | tar xz
-          sudo mv git-cliff /usr/local/bin/
-
       - name: Generate changelog
-        run: git cliff --tag "v${VERSION}" --output CHANGELOG.md
+        uses: orhun/git-cliff-action@v4
+        with:
+          config: cliff.toml
+          args: --tag "v${{ needs.check-version.outputs.new_version }}"
+        env:
+          OUTPUT: CHANGELOG.md
 
       - name: Create tag
         run: |
