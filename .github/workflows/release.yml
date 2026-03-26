@@ -75,13 +75,21 @@ jobs:
           ./peut-etre --generate-tmLanguage > vscode-extension/peut-etre.tmLanguage.json || true
           cd vscode-extension && vsce package --allow-missing-repository
 
-      - name: Generate changelog
+      - name: Generate full changelog
         uses: orhun/git-cliff-action@v4
         with:
           config: cliff.toml
           args: --tag "v${{ needs.check-version.outputs.new_version }}"
         env:
           OUTPUT: CHANGELOG.md
+
+      - name: Generate release notes (current version only)
+        uses: orhun/git-cliff-action@v4
+        with:
+          config: cliff.toml
+          args: --tag "v${{ needs.check-version.outputs.new_version }}" --unreleased --strip header
+        env:
+          OUTPUT: RELEASE_NOTES.md
 
       - name: Create tag
         run: |
@@ -95,7 +103,7 @@ jobs:
         with:
           tag_name: v${{ needs.check-version.outputs.new_version }}
           name: v${{ needs.check-version.outputs.new_version }}
-          body_path: CHANGELOG.md
+          body_path: RELEASE_NOTES.md
           files: |
             peut-etre
             vscode-extension/*.vsix
