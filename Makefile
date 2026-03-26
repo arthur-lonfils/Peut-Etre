@@ -1,13 +1,13 @@
 CC       = gcc
-CFLAGS   = -Wall -Wextra -pedantic -std=c11 -g -O1
 SRCDIR   = src
 BUILDDIR = build
 SOURCES  = $(wildcard $(SRCDIR)/*.c)
 OBJECTS  = $(SOURCES:$(SRCDIR)/%.c=$(BUILDDIR)/%.o)
 TARGET   = peut-etre
-VERSION  = 0.1.2
+VERSION ?= $(shell git describe --tags --abbrev=0 2>/dev/null | sed 's/^v//' || echo "0.0.0")
+CFLAGS   = -Wall -Wextra -pedantic -std=c11 -g -O1 -DPE_VERSION=\"$(VERSION)\"
 
-.PHONY: all clean test setup vscode-ext changelog release
+.PHONY: all clean test setup vscode-ext changelog
 
 all: $(TARGET)
 
@@ -44,14 +44,6 @@ vscode-ext: $(TARGET)
 changelog:
 	@git cliff --output CHANGELOG.md
 	@echo "CHANGELOG.md updated."
-
-release: $(TARGET) changelog vscode-ext
-	@echo ""
-	@echo "Release v$(VERSION) ready:"
-	@echo "  1. git add CHANGELOG.md && git commit -m 'chore: update changelog'"
-	@echo "  2. git tag -a v$(VERSION) -m 'v$(VERSION)'"
-	@echo "  3. git push origin main v$(VERSION)"
-	@echo "  4. gh release create v$(VERSION) ./peut-etre ./vscode-extension/peut-etre-$(VERSION).vsix"
 
 clean:
 	rm -rf $(BUILDDIR) $(TARGET) vscode-extension/*.vsix

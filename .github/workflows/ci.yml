@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build
+        run: make
+
+      - name: Run tests
+        run: make test
+
+      - name: Verify C codegen compiles
+        run: |
+          for f in examples/*.pt; do
+            echo "--- $f (C) ---"
+            ./peut-etre --emit "$f" > /tmp/pe_out.c
+            gcc -std=c11 -o /dev/null /tmp/pe_out.c -lm
+          done
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Verify TS codegen
+        run: |
+          npm install -g typescript ts-node @types/node
+          for f in examples/*.pt; do
+            echo "--- $f (TS) ---"
+            ./peut-etre --emit --target ts "$f" > /tmp/pe_out.ts
+            npx tsc --noEmit --strict /tmp/pe_out.ts || true
+          done

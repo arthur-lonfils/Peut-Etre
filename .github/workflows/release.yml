@@ -1,0 +1,101 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    outputs:
+      bump: ${{ steps.bump.outputs.bump }}
+      new_version: ${{ steps.version.outputs.version }}
+      should_release: ${{ steps.bump.outputs.should_release }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine version bump
+        id: bump
+        run: |
+          BUMP=$(./scripts/version-bump.sh) && SHOULD_RELEASE=true || SHOULD_RELEASE=false
+          echo "bump=$BUMP" >> "$GITHUB_OUTPUT"
+          echo "should_release=$SHOULD_RELEASE" >> "$GITHUB_OUTPUT"
+          echo "Bump type: $BUMP (release: $SHOULD_RELEASE)"
+
+      - name: Compute next version
+        id: version
+        if: steps.bump.outputs.should_release == 'true'
+        run: |
+          VERSION=$(./scripts/next-version.sh "${{ steps.bump.outputs.bump }}")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Next version: $VERSION"
+
+  release:
+    needs: check-version
+    if: needs.check-version.outputs.should_release == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set version
+        run: echo "VERSION=${{ needs.check-version.outputs.new_version }}" >> "$GITHUB_ENV"
+
+      - name: Build with version
+        run: make VERSION="${VERSION}"
+
+      - name: Run tests
+        run: make test
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Inject version into package.json
+        run: |
+          cd vscode-extension
+          node -e "
+            const pkg = require('./package.json');
+            pkg.version = '${VERSION}';
+            require('fs').writeFileSync('package.json', JSON.stringify(pkg, null, 4) + '\n');
+          "
+
+      - name: Package VS Code extension
+        run: |
+          npm install -g @vscode/vsce
+          ./peut-etre --generate-tmLanguage > vscode-extension/peut-etre.tmLanguage.json || true
+          cd vscode-extension && vsce package --allow-missing-repository
+
+      - name: Install git-cliff
+        run: |
+          curl -sL https://github.com/orhun/git-cliff/releases/latest/download/git-cliff-x86_64-unknown-linux-gnu.tar.gz | tar xz
+          sudo mv git-cliff /usr/local/bin/
+
+      - name: Generate changelog
+        run: git cliff --tag "v${VERSION}" --output CHANGELOG.md
+
+      - name: Create tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "v${VERSION}" -m "v${VERSION}"
+          git push origin "v${VERSION}"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ needs.check-version.outputs.new_version }}
+          name: v${{ needs.check-version.outputs.new_version }}
+          body_path: CHANGELOG.md
+          files: |
+            peut-etre
+            vscode-extension/*.vsix
