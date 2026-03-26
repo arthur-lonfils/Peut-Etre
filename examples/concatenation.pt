@@ -1,0 +1,19 @@
+// Concaténation de chaînes — parce que coller des mots c'est un art.
+
+genre prenom = "Jean-Michel";
+genre nom = "Chaos";
+genre espace = " ";
+
+// Concaténation simple
+genre nom_complet = prenom + espace + nom;
+lache_un_com(nom_complet);
+
+// Concaténation directe
+lache_un_com("Salut " + prenom + " !");
+
+// Construction d'un message en plusieurs étapes
+genre debut = "Bienvenue dans ";
+genre milieu = "le monde de ";
+genre fin = "Peut-Être !";
+genre message = debut + milieu + fin;
+lache_un_com(message);
